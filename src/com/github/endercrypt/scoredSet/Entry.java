@@ -1,7 +1,13 @@
 package com.github.endercrypt.scoredSet;
 
-public class Entry<T>
+import java.io.Serializable;
+
+public class Entry<T> implements Serializable
 {
+	private static final long serialVersionUID = 4400547082175963299L;
+	/**
+	 * 
+	 */
 	private T object;
 	private int score;
 	private Entry<T> nextEntry; //next obj with lower score

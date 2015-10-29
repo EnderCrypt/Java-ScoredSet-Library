@@ -1,27 +1,23 @@
 package com.github.endercrypt.scoredSet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class ScoredSet<T extends Scoreable> implements Set// , Iterable<T>
+public class ScoredSet<T extends Scoreable> implements Set<T>, Serializable
 {
+	private static final long serialVersionUID = -5959960879749837594L;
+	/**
+	 * 
+	 */
 	private Entry<T> first = null;
 	private int size = 0;
 
-	public boolean add(Object object)
+	public boolean add(T item)
 	{
-		T item;
-		if (object instanceof Scoreable)
-		{
-			item = (T) object;
-		}
-		else
-		{
-			throw new UnsupportedOperationException("the object your trying to add (" + object + ") does not implement Scorable");
-		}
 		Entry<T> entry = new Entry<>(item);
 		if (size == 0)
 		{
@@ -112,6 +108,7 @@ public class ScoredSet<T extends Scoreable> implements Set// , Iterable<T>
 		return removed.get();
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean remove(Object inObject)
 	{
 		T other;
@@ -254,9 +251,15 @@ public class ScoredSet<T extends Scoreable> implements Set// , Iterable<T>
 	{
 		return (size == 0);
 	}
+	
+	private void unsupported()
+	{
+		throw new UnsupportedOperationException("the method you are trying to use has not yet been implmented");
+	}
 
 	/**
 	 * UNSUPPORTED
+	 * 
 	 */
 	@Override
 	public Object[] toArray()
@@ -267,9 +270,11 @@ public class ScoredSet<T extends Scoreable> implements Set// , Iterable<T>
 
 	/**
 	 * UNSUPPORTED
+	 * 
 	 */
+	@SuppressWarnings("hiding")
 	@Override
-	public Object[] toArray(Object[] a)
+	public <T> T[] toArray(T[] a)
 	{
 		unsupported();
 		return null;
@@ -277,9 +282,10 @@ public class ScoredSet<T extends Scoreable> implements Set// , Iterable<T>
 
 	/**
 	 * UNSUPPORTED
+	 * 
 	 */
 	@Override
-	public boolean containsAll(Collection c)
+	public boolean containsAll(Collection<?> c)
 	{
 		unsupported();
 		return false;
@@ -287,9 +293,10 @@ public class ScoredSet<T extends Scoreable> implements Set// , Iterable<T>
 
 	/**
 	 * UNSUPPORTED
+	 * 
 	 */
 	@Override
-	public boolean addAll(Collection c)
+	public boolean addAll(Collection<? extends T> c)
 	{
 		unsupported();
 		return false;
@@ -297,9 +304,10 @@ public class ScoredSet<T extends Scoreable> implements Set// , Iterable<T>
 
 	/**
 	 * UNSUPPORTED
+	 * 
 	 */
 	@Override
-	public boolean retainAll(Collection c)
+	public boolean retainAll(Collection<?> c)
 	{
 		unsupported();
 		return false;
@@ -307,16 +315,12 @@ public class ScoredSet<T extends Scoreable> implements Set// , Iterable<T>
 
 	/**
 	 * UNSUPPORTED
+	 * 
 	 */
 	@Override
-	public boolean removeAll(Collection c)
+	public boolean removeAll(Collection<?> c)
 	{
 		unsupported();
 		return false;
-	}
-
-	private void unsupported()
-	{
-		throw new UnsupportedOperationException("the method you are trying to use has not yet been implmented");
 	}
 }
