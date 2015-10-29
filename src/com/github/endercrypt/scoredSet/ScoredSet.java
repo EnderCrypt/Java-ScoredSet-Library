@@ -1,16 +1,27 @@
 package com.github.endercrypt.scoredSet;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
-public class ScoredSet<T extends Scoreable> implements Iterable<T>
+public class ScoredSet<T extends Scoreable> implements Set// , Iterable<T>
 {
 	private Entry<T> first = null;
 	private int size = 0;
 
-	public void add(T item)
+	public boolean add(Object object)
 	{
+		T item;
+		if (object instanceof Scoreable)
+		{
+			item = (T) object;
+		}
+		else
+		{
+			throw new UnsupportedOperationException("the object your trying to add (" + object + ") does not implement Scorable");
+		}
 		Entry<T> entry = new Entry<>(item);
 		if (size == 0)
 		{
@@ -43,6 +54,7 @@ public class ScoredSet<T extends Scoreable> implements Iterable<T>
 			}
 			size += 1;
 		}
+		return true;
 	}
 
 	public T get(int index)
@@ -100,8 +112,17 @@ public class ScoredSet<T extends Scoreable> implements Iterable<T>
 		return removed.get();
 	}
 
-	public boolean remove(T other)
+	public boolean remove(Object inObject)
 	{
+		T other;
+		if (inObject instanceof Scoreable)
+		{
+			other = (T) inObject;
+		}
+		else
+		{
+			throw new UnsupportedOperationException("the object your trying to remove (" + inObject + ") does not implement Scorable");
+		}
 		if (first.get() == other)
 		{
 			first = first.getNext();
@@ -124,8 +145,12 @@ public class ScoredSet<T extends Scoreable> implements Iterable<T>
 		return false;
 	}
 
-	public boolean contains(T other)
+	public boolean contains(Object other)// boolean contains(T other)
 	{
+		if ((other instanceof Scoreable) == false)
+		{
+			throw new UnsupportedOperationException("the object your trying to check for (" + other + ") does not implement Scorable");
+		}
 		Entry<T> object = first;
 		do
 		{
@@ -222,5 +247,76 @@ public class ScoredSet<T extends Scoreable> implements Iterable<T>
 			}
 		};
 		return itr;
+	}
+
+	@Override
+	public boolean isEmpty()
+	{
+		return (size == 0);
+	}
+
+	/**
+	 * UNSUPPORTED
+	 */
+	@Override
+	public Object[] toArray()
+	{
+		unsupported();
+		return null;
+	}
+
+	/**
+	 * UNSUPPORTED
+	 */
+	@Override
+	public Object[] toArray(Object[] a)
+	{
+		unsupported();
+		return null;
+	}
+
+	/**
+	 * UNSUPPORTED
+	 */
+	@Override
+	public boolean containsAll(Collection c)
+	{
+		unsupported();
+		return false;
+	}
+
+	/**
+	 * UNSUPPORTED
+	 */
+	@Override
+	public boolean addAll(Collection c)
+	{
+		unsupported();
+		return false;
+	}
+
+	/**
+	 * UNSUPPORTED
+	 */
+	@Override
+	public boolean retainAll(Collection c)
+	{
+		unsupported();
+		return false;
+	}
+
+	/**
+	 * UNSUPPORTED
+	 */
+	@Override
+	public boolean removeAll(Collection c)
+	{
+		unsupported();
+		return false;
+	}
+
+	private void unsupported()
+	{
+		throw new UnsupportedOperationException("the method you are trying to use has not yet been implmented");
 	}
 }
