@@ -7,12 +7,7 @@ import java.util.List;
 public class ScoredSet<T extends Scoreable> implements Iterable<T>
 {
 	private Entry<T> first = null;
-	private int size;
-
-	public ScoredSet()
-	{
-
-	}
+	private int size = 0;
 
 	public void add(T item)
 	{
